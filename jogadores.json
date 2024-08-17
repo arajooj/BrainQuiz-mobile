@@ -1,0 +1,18 @@
+{
+    "1": {
+        "up": "ArrowUp",
+        "left": "ArrowLeft",
+        "right": "ArrowRight",
+        "down": "ArrowDown",
+        "trigger": "Enter",
+        "cancel": "Control"
+    },
+    "2": {
+        "up": "w",
+        "left": "a",
+        "right": "d",
+        "down": "s",
+        "trigger": "q",
+        "cancel": "e"
+    }
+}

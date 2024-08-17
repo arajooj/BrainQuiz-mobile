@@ -1,17 +1,22 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify, abort
 import keyboard
+import json
+import os
 
 app = Flask(__name__)
 
-# Rota para a página do jogador 1
-@app.route('/jogador/1')
-def jogador1():
-    return render_template('jogador1.html')
+# Carrega os dados dos jogadores do arquivo JSON
+with open('jogadores.json', 'r') as f:
+    jogadores = json.load(f)
 
-# Rota para a página do jogador 2
-@app.route('/jogador/2')
-def jogador2():
-    return render_template('jogador2.html')
+# Rota dinâmica para os jogadores
+@app.route('/jogador/<nome>')
+def jogador(nome):
+    if nome in jogadores:
+        teclas = jogadores[nome]
+        return render_template('jogador.html', nome=nome, teclas=teclas)
+    else:
+        return abort(404, description="Jogador não encontrado")
 
 # Rota para capturar as teclas pressionadas
 @app.route('/key', methods=['POST'])
@@ -22,8 +27,8 @@ def key():
     # Simula a entrada da tecla no computador
     if key:
         keyboard.press_and_release(key)
-        return f'Key {key} pressed', 200
-    return 'No key', 400
+        return jsonify(success=True), 200
+    return jsonify(success=False), 400
 
 if __name__ == '__main__':
     app.run(debug=True)

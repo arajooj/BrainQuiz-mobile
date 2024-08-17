@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ nome | capitalize }}</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .button {
+            width: 100px;
+            height: 100px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 50%;
+            transition: background-color 0.1s;
+        }
+        .button:hover {
+            opacity: 0.8;
+        }
+        .up { background-color: orange; color: black; }
+        .left { background-color: red; color: white; }
+        .right { background-color: blue; color: white; }
+        .down { background-color: green; color: white; }
+        .trigger { background-color: black; color: white; }
+        .cancel { background-color: gray; color: white; position: absolute; bottom: 10px; right: 10px; padding: 10px 20px; border-radius: 5px; }
+        .pressed {
+            box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <h1>Jogador {{ nome | capitalize }}</h1>
+    <div class="container">
+        <div class="row">
+            <button id="up" class="button up" onclick="sendKey('{{ teclas['up'] }}')">{{ teclas['up'] }}</button>
+        </div>
+        <div class="row">
+            <button id="left" class="button left" onclick="sendKey('{{ teclas['left'] }}')">{{ teclas['left'] }}</button>
+            <button id="trigger" class="button trigger" onclick="sendKey('{{ teclas['trigger'] }}')">{{ teclas['trigger'] }}</button>
+            <button id="right" class="button right" onclick="sendKey('{{ teclas['right'] }}')">{{ teclas['right'] }}</button>
+        </div>
+        <div class="row">
+            <button id="down" class="button down" onclick="sendKey('{{ teclas['down'] }}')">{{ teclas['down'] }}</button>
+        </div>
+    </div>
+    <button class="button cancel" onclick="sendKey('{{ teclas['cancel'] }}')">{{ teclas['cancel'] }}</button>
+
+    <script>
+        function sendKey(key) {
+            fetch('/key', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ key: key })
+            }).then(response => {
+                console.log(`{{ nome | capitalize }}: Tecla ${key} enviada`);
+                highlightButton(key);
+            });
+        }
+
+        document.addEventListener('keydown', function(event) {
+            const keyMap = {
+                "{{ teclas['left'] }}": "left",
+                "{{ teclas['right'] }}": "right",
+                "{{ teclas['up'] }}": "up",
+                "{{ teclas['down'] }}": "down",
+                "{{ teclas['trigger'] }}": "trigger",
+                "{{ teclas['cancel'] }}": "cancel"
+            };
+
+            const buttonId = keyMap[event.key];
+
+            if (buttonId) {
+                sendKey(event.key);
+                highlightButton(buttonId);
+            }
+        });
+
+        function highlightButton(buttonId) {
+            const button = document.getElementById(buttonId);
+            if (button) {
+                button.classList.add('pressed');
+                setTimeout(() => {
+                    button.classList.remove('pressed');
+                }, 100);
+            }
+        }
+    </script>
+</body>
+</html>
