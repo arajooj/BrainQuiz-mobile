@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogador 1</title>
+</head>
+<body>
+    <h1>Jogador 1</h1>
+    <p>Use as teclas de seta para movimento, ENTER para gatilho e CTRL para cancelar.</p>
+    <script>
+        document.addEventListener('keydown', function(event) {
+            const keyMap = {
+                "ArrowLeft": "left",
+                "ArrowRight": "right",
+                "ArrowUp": "up",
+                "ArrowDown": "down",
+                "Enter": "enter",
+                "Control": "ctrl"
+            };
+
+            const key = keyMap[event.key];
+
+            if (key) {
+                fetch('/key', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ key: key })
+                }).then(response => {
+                    console.log(`Jogador 1: Tecla ${key} enviada`);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogador 2</title>
+</head>
+<body>
+    <h1>Jogador 2</h1>
+    <p>Use WASD para movimento, Q para gatilho e E para cancelar.</p>
+    <script>
+        document.addEventListener('keydown', function(event) {
+            const keyMap = {
+                "w": "w",
+                "a": "a",
+                "s": "s",
+                "d": "d",
+                "q": "q",
+                "e": "e"
+            };
+
+            const key = keyMap[event.key];
+
+            if (key) {
+                fetch('/key', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ key: key })
+                }).then(response => {
+                    console.log(`Jogador 2: Tecla ${key} enviada`);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
