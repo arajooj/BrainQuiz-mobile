@@ -4,11 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogador 2</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .button {
+            width: 100px;
+            height: 100px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+        }
+        .up { background-color: orange; color: black; }
+        .left { background-color: red; color: white; }
+        .right { background-color: blue; color: white; }
+        .down { background-color: green; color: white; }
+        .trigger { background-color: black; color: white; }
+        .cancel { background-color: gray; color: white; position: absolute; bottom: 10px; right: 10px; padding: 10px 20px; }
+    </style>
 </head>
 <body>
     <h1>Jogador 2</h1>
-    <p>Use WASD para movimento, Q para gatilho e E para cancelar.</p>
+    <div class="container">
+        <div class="row">
+            <button class="button up" onclick="sendKey('w')">Cima</button>
+        </div>
+        <div class="row">
+            <button class="button left" onclick="sendKey('a')">Esquerda</button>
+            <button class="button trigger" onclick="sendKey('q')">Gatilho</button>
+            <button class="button right" onclick="sendKey('d')">Direita</button>
+        </div>
+        <div class="row">
+            <button class="button down" onclick="sendKey('s')">Baixo</button>
+        </div>
+    </div>
+    <button class="button cancel" onclick="sendKey('e')">Cancelar</button>
+
     <script>
+        function sendKey(key) {
+            fetch('/key', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ key: key })
+            }).then(response => {
+                console.log(`Jogador 2: Tecla ${key} enviada`);
+            });
+        }
+
         document.addEventListener('keydown', function(event) {
             const keyMap = {
                 "w": "w",
@@ -22,15 +79,7 @@
             const key = keyMap[event.key];
 
             if (key) {
-                fetch('/key', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ key: key })
-                }).then(response => {
-                    console.log(`Jogador 2: Tecla ${key} enviada`);
-                });
+                sendKey(event.key);
             }
         });
     </script>
