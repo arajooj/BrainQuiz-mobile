@@ -27,31 +27,32 @@
             align-items: center;
             justify-content: center;
             border: none;
+            border-radius: 50%; /* Torna os botões redondos */
         }
         .up { background-color: orange; color: black; }
         .left { background-color: red; color: white; }
         .right { background-color: blue; color: white; }
         .down { background-color: green; color: white; }
         .trigger { background-color: black; color: white; }
-        .cancel { background-color: gray; color: white; position: absolute; bottom: 10px; right: 10px; padding: 10px 20px; }
+        .cancel { background-color: gray; color: white; position: absolute; bottom: 10px; right: 10px; padding: 10px 20px; border-radius: 5px; }
     </style>
 </head>
 <body>
     <h1>Jogador 1</h1>
     <div class="container">
         <div class="row">
-            <button class="button up" onclick="sendKey('ArrowUp')">Cima</button>
+            <button class="button up" onclick="sendKey('ArrowUp')">↑</button>
         </div>
         <div class="row">
-            <button class="button left" onclick="sendKey('ArrowLeft')">Esquerda</button>
-            <button class="button trigger" onclick="sendKey('Enter')">Gatilho</button>
-            <button class="button right" onclick="sendKey('ArrowRight')">Direita</button>
+            <button class="button left" onclick="sendKey('ArrowLeft')">←</button>
+            <button class="button trigger" onclick="sendKey('Enter')">⏎</button>
+            <button class="button right" onclick="sendKey('ArrowRight')">→</button>
         </div>
         <div class="row">
-            <button class="button down" onclick="sendKey('ArrowDown')">Baixo</button>
+            <button class="button down" onclick="sendKey('ArrowDown')">↓</button>
         </div>
     </div>
-    <button class="button cancel" onclick="sendKey('Control')">Cancelar</button>
+    <button class="button cancel" onclick="sendKey('Control')">Ctrl</button>
 
     <script>
         function sendKey(key) {
